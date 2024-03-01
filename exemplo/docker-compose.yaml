@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:14.3-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    networks:
+      - senior-dev-app
+
+networks:
+  senior-dev-app:
+    driver: bridge

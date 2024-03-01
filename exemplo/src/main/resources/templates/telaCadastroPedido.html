@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tela Cadastro de Pedidos</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+          background-color: #f8f9fa; /* Cor de fundo */
+          padding: 50px
+      }
+      .titulo {
+          font-size: 2rem; /* Tamanho do título */
+          color: #333; /* Cor do título */
+          margin-bottom: 20px; /* Espaçamento abaixo do título */
+      }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <a style="margin-bottom: 50px" href="/" class="btn btn-primary">Voltar para a lista de pedidos</a>
+    <h2>Formulário de Pedido</h2>
+    <form th:action="@{/adicionarItem}" method="post">
+        <div class="form-group">
+            <label for="cliente">Nome do Cliente:</label>
+            <input type="text" class="form-control" id="cliente" name="cliente" th:value="${pedido.cliente}" required>
+        </div>
+        <div class="form-group">
+            <label for="condicaoPagamento">Condicao de pagamento:</label>
+            <input type="text" class="form-control" id="condicaoPagamento" name="condicaoPagamento" th:value="${pedido.condicaoPagamento}" required>
+        </div>
+        <div class="form-group">
+            <label for="precoTotal">Preço Total:</label>
+            <input type="number" readonly class="form-control" th:value="${precoTotal}" id="precoTotal" name="precoTotal">
+        </div>
+        <div>
+            <h2> Item para adicionar </h2>
+            <div id="itensPedido">
+                <div class="form-group">
+                    <label for="produto">Produto:</label>
+                    <input type="text" class="form-control" th:value="${itemPedido.nome}" id="produto" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" class="form-control" th:value="${itemPedido.quantidade}" id="quantidade" name="quantidade" required>
+                </div>
+                <div class="form-group">
+                    <label for="preco">Preço unitário:</label>
+                    <input type="number" class="form-control" th:value="${itemPedido.preco}" id="preco" name="preco" required>
+                </div>
+            </div>
+        </div>
+        <button style="margin-top:10px" type="submit" class="btn btn-primary mb-3" id="addItem">Adicionar Item</button>
+    </form>
+    <div>
+        <button style="margin-top:10px" onclick="deleteItem()" class="btn btn-danger mb-3" id="deleteItem">Limpar Items</button>
+    </div>
+    <div class="container mt-5">
+        <h2>Listagem de Items</h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Nome</th>
+                <th>Data de Registro</th>
+                <th>Quantidade</th>
+                <th>Preço unitário</th>
+                <th>Preço total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="itemPedido : ${pedido.itemsPedido}">
+                <td th:text="${itemPedido.pedido.cliente}"></td>
+                <td th:text="${itemPedido.nome}"></td>
+                <td th:text="${#temporals.format(itemPedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                <td th:text="${itemPedido.quantidade}"></td>
+                <td th:text="${itemPedido.precoFormatadoUnitario}"></td>
+                <td th:text="${itemPedido.precoFormatadoTotal}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <button style="margin-top:10px" onclick="submitFormularioPedido()" class="btn btn-success mb-3" id="addPedido">Salvar Pedido</button>
+    </div>
+
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function submitFormularioPedido() {
+          $.ajax({
+            url: '/salvarPedido',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(response) {
+                alert('Pedido salvo com sucesso!');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('Falta item no pedido');
+            }
+        });
+    }
+
+
+       function deleteItem() {
+          $.ajax({
+            url: '/limparItemsPedido',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function(response)
+            {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('Não foi possivel limpar');
+            }
+        });
+    }
+</script>
+</body>
+</html>

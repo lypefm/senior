@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pedidos</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Cor de fundo */
+            padding: 50px
+        }
+        .titulo {
+            font-size: 2rem; /* Tamanho do título */
+            color: #333; /* Cor do título */
+            margin-bottom: 20px; /* Espaçamento abaixo do título */
+        }
+        .botao-adicionar {
+            background-color: #007bff; /* Cor de fundo */
+            border-color: #007bff; /* Cor da borda */
+            color: #fff; /* Cor do texto */
+        }
+        .botao-detalhar {
+            background-color: #ffd700;
+            border-color: #ffd700;
+            color: white; /* Cor do texto */
+        }
+        .botao-detalhar:hover {
+            background-color: #ffbf00; /* Cor de fundo ao passar o mouse */
+            border-color: #ffbf00; /* Cor da borda ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h1 class="titulo">Lista de Pedidos</h1>
+        </div>
+        <div class="col-6 d-flex justify-content-end align-items-center">
+            <a href="/telacadastro?isReset=true" class="btn btn-primary botao-adicionar me-2">Adicionar Pedido</a>
+        </div>
+        <div class="col-6 d-flex justify-content-end align-items-center">
+            <a href="/download" class="btn btn-primary botao-adicionar me-2">Download Relatório</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Data de Registro</th>
+            <th>Condição de pagamento</th>
+            <th>Preco Total</th>
+            <th>Detalhar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop through each Pedido -->
+        <tr th:each="pedido : ${pedidos}">
+            <td th:text="${pedido.id}">ID</td>
+            <td th:text="${pedido.cliente}">Cliente</td>
+            <td th:text="${#temporals.format(pedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}">Data de Registro</td>
+            <td th:text="${pedido.condicaoPagamento}">Condição de pagamento</td>
+            <td th:text="${pedido.precoTotal}">Preço Total</td>
+            <td>
+                <a th:href="@{'/listaItems/' + ${pedido.id}}" class="btn btn-secondary botao-detalhar">Detalhar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>Lista de items cadastrados</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Id do Pedido</th>
+            <th>Cliente</th>
+            <th>Nome</th>
+            <th>Data de Registro</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Preço Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="itemPedido : ${itemsPedido}">
+            <td th:text="${itemPedido.id}"></td>
+            <td th:text="${itemPedido.pedido.id}"></td>
+            <td th:text="${itemPedido.pedido.cliente}"></td>
+            <td th:text="${itemPedido.nome}"></td>
+            <td th:text="${#temporals.format(itemPedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            <td th:text="${itemPedido.quantidade}"></td>
+            <td th:text="${itemPedido.precoFormatadoUnitario}"></td>
+            <td th:text="${itemPedido.precoFormatadoTotal}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Items</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body {
+    background-color: #f8f9fa; /* Cor de fundo */
+    padding: 50px
+}
+.titulo {
+    font-size: 2rem; /* Tamanho do título */
+    color: #333; /* Cor do título */
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <a style="margin-bottom: 20px; margin-top: 30px" href="/" class="btn btn-primary">Voltar para a lista de pedidos</a>
+<div class="row mb-3">
+    <div class="col-6">
+        <h1 class="titulo">Lista de Items do pedido</h1>
+    </div>
+    <div class="col-6 d-flex justify-content-end align-items-center">
+        <a href="/telacadastro" class="btn btn-primary botao-adicionar me-2">Adicionar Pedido</a>
+    </div>
+</div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Id do Pedido</th>
+            <th>Cliente</th>
+            <th>Nome</th>
+            <th>Data de Registro</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Preço Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="itemPedido : ${itemsPedido}">
+            <td th:text="${itemPedido.id}"></td>
+            <td th:text="${itemPedido.pedido.id}"></td>
+            <td th:text="${itemPedido.pedido.cliente}"></td>
+            <td th:text="${itemPedido.nome}"></td>
+            <td th:text="${#temporals.format(itemPedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            <td th:text="${itemPedido.quantidade}"></td>
+            <td th:text="${itemPedido.precoFormatadoUnitario}"></td>
+            <td th:text="${itemPedido.precoFormatadoTotal}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

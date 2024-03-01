@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatorio</title>
+</head>
+<body>
+<h3>Lista de pedidos cadastrados</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Data de Registro</th>
+        <th>Condição de pagamento</th>
+        <th>Preço Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through each Pedido -->
+    <tr th:each="pedido : ${pedidos}">
+        <td th:text="${pedido.id}">ID</td>
+        <td th:text="${pedido.cliente}">Cliente</td>
+        <td th:text="${pedido.condicaoPagamento}">Condição de pagamento</td>
+        <td th:text="${#temporals.format(pedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}">Data de Registro</td>
+        <td th:text="${pedido.precoTotal}">Preço total</td>
+    </tr>
+    </tbody>
+</table>
+<h3>Lista de items cadastrados</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Id do Pedido</th>
+        <th>Cliente</th>
+        <th>Nome</th>
+        <th>Data de Registro</th>
+        <th>Quantidade</th>
+        <th>Preço Unitário</th>
+        <th>Preço Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="itemPedido : ${itemsPedido}">
+        <td th:text="${itemPedido.id}"></td>
+        <td th:text="${itemPedido.pedido.id}"></td>
+        <td th:text="${itemPedido.pedido.cliente}"></td>
+        <td th:text="${itemPedido.nome}"></td>
+        <td th:text="${#temporals.format(itemPedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}"></td>
+        <td th:text="${itemPedido.quantidade}"></td>
+        <td th:text="${itemPedido.precoFormatadoUnitario}"></td>
+        <td th:text="${itemPedido.precoFormatadoTotal}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
